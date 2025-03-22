@@ -1,9 +1,12 @@
+import HeroSection from '@/components/home/hero-section'
 import React from 'react'
 
-const HomePage = () => {
+const Home = () => {
   return (
-    <div>Home Page</div>
+    <div className="">
+      <HeroSection />
+    </div>
   )
 }
 
-export default HomePage
+export default Home
