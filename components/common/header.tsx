@@ -16,7 +16,7 @@ const Header = () => {
           transition duration-200 ease-in-out"/>
           <span className="font-extrabold lg:text-xl
           text-gray-900">
-            SummaryAI
+            Gist
           </span>
         </NavLink>
       </div>
