@@ -7,9 +7,8 @@ import UploadFormInput from "@/components/upload/upload-form-input";
 const schema = z.object({ 
     file: z
         .instanceof(File, {message: 'Invalid file'})
-        .refine((file) => file.size <= 20 * 1024 * 1024, {
-            message: 'File size must be less than 20MB',
-        })
+        .refine((file) => file.size <= 20 * 1024 * 1024, 
+        'File size must be less than 20MB')
         .refine((file) => file.type.startsWith('application/pdf'), 'File must be a PDF')
 });
 
@@ -22,6 +21,16 @@ const UploadForm = () => {
         const file = formData.get('file') as File;
 
         // validating the fields
+        const validatedFields = schema.safeParse({ file });
+
+        if (!validatedFields.success) {
+            console.log(
+                validatedFields.error.flatten().fieldErrors.file?.
+                [0] ?? 'Invalid file'
+            );
+            return;
+        }
+
         // schema with zod
         // upload the file to uploadthing
         // parse the pdf using langchain
