@@ -3,9 +3,10 @@ import { ClerkProvider } from "@clerk/nextjs"
 import "./globals.css";
 import Header from "@/components/common/header";
 import Footer from "@/components/common/footer";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
-  title: "SomeUp",
+  title: "Gist",
   description: "Summary AI SAAS App",
 };
 
@@ -26,6 +27,7 @@ export default function RootLayout({
               </main>
             <Footer />
           </div>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

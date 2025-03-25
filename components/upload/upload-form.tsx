@@ -3,6 +3,9 @@
 import { z } from 'zod';
 
 import UploadFormInput from "@/components/upload/upload-form-input";
+import { useUploadThing } from '@/utils/uploadthing';
+import { toast } from 'sonner';
+import { generatePdfSummary } from '@/actions/upload-actions';
 
 const schema = z.object({ 
     file: z
@@ -13,7 +16,21 @@ const schema = z.object({
 });
 
 const UploadForm = () => {
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const { startUpload, routeConfig } = useUploadThing(
+        'pdfUploader', {
+            onClientUploadComplete: () => {
+                console.log('Upload successfully!');
+            },
+            onUploadError: (err) => {
+                toast('Error occured while uploading.')
+            },
+            onUploadBegin: ({ file }) => {
+                console.log('Upload has began for', file);
+            }
+        }
+    );
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         console.log("PDF submitted")
@@ -28,12 +45,23 @@ const UploadForm = () => {
                 validatedFields.error.flatten().fieldErrors.file?.
                 [0] ?? 'Invalid file'
             );
+            toast('Something went wrong.')
             return;
         }
 
-        // schema with zod
+        toast('Uploading PDF...')
+
         // upload the file to uploadthing
+        const resp = await startUpload([file]);
+        if (!resp) {
+            toast('Something went wrong, please use a different file.')
+            return;
+        }
+
+        toast('Processing PDF, Gist AI is reading your document...')
+
         // parse the pdf using langchain
+        const summary = await generatePdfSummary(resp);
         // summarize the PDF using AI
         // save the summary to the database
         // redirect to the [id] summary page

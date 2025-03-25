@@ -4,7 +4,7 @@ import { Sparkles } from "lucide-react"
 const UploadHeader = () => {
   return (
     <>
-        <div className="mx-auto max-w-7xl px-6 py-4 sm:py-32 lg:px-8">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="flex flex-col items-center justify-center gap-6 text-center">
                 <div className="relative p-[1px] overflow-hidden rounded-full bg-linear-to-r
                 from-blue-200 via-blue-500 to-blue-800 animate-gradient-x group">
