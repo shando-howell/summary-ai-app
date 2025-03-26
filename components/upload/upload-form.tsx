@@ -75,9 +75,9 @@ const UploadForm = () => {
             if (data) {
                 toast('Hang tight, we are saving your summary!');
                 formRef.current?.reset();
-                // if (data.summary) {
-                //     // save the summary to the database
-                // }
+                if (data.summary) {
+                    // save the summary to the database
+                }
             }
         } catch (error) {
             setIsLoading(false);
