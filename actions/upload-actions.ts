@@ -1,5 +1,8 @@
 'use server';
 
+import { fetchAndExtractPdfText } from "@/lib/langchain";
+import { generateSummaryFromOpenAI } from "@/lib/openai";
+
 export async function generatePdfSummary(uploadResponse: [{
     serverData: {
         userId: string;
@@ -25,6 +28,38 @@ export async function generatePdfSummary(uploadResponse: [{
     } = uploadResponse[0];
 
     if (!pdfUrl) {
-        
+        return {
+            success: false,
+            message: 'File upload failed',
+            data: null,
+        }
+    }
+
+    try {
+        const pdfText = await fetchAndExtractPdfText(pdfUrl);
+        console.log(pdfText)
+
+        let summary;
+        try {
+            const summary = await generateSummaryFromOpenAI(pdfText);
+            console.log({ summary });
+        } catch (error) {
+            console.log(error);
+            // Call Gemini AI
+        }
+
+        if (!summary) {
+            return {
+                success: false,
+                message: 'Failed to generate summary.',
+                data: null,
+            };
+        }
+    } catch (err) {
+        return {
+            success: false,
+            message: 'File upload failed',
+            data: null,
+        }
     }
 }
