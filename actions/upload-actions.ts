@@ -42,7 +42,7 @@ export async function generatePdfSummary(uploadResponse: [{
 
         let summary;
         try {
-            const summary = await generateSummaryFromOpenAI(pdfText);
+            const summary = await generateSummaryFromGemini(pdfText);
             console.log({ summary });
         } catch (error) {
             console.log(error);
